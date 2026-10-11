@@ -7,3 +7,8 @@ class CatchmentConfig:
     basin_name: str = "Kelani River Basin"
     bounding_box: Tuple[float, float, float, float] = (6.70, 7.25, 79.85, 80.60)
     total_area_km2: float = 2292.0
+
+
+@dataclass(frozen=True)
+class AlertConfig:
+    low_lying_warning_surge_m: float = 0.50
