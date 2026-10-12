@@ -12,3 +12,12 @@ class CatchmentConfig:
 @dataclass(frozen=True)
 class AlertConfig:
     low_lying_warning_surge_m: float = 0.50
+
+
+    sub_catchments = {
+        "Norton_Bridge_Upper": {"elevation_m": 1250.0, "lag_hours": 24.0, "weight": 0.22},
+        "Castlereigh_Catchment": {"elevation_m": 1100.0, "lag_hours": 22.0, "weight": 0.20},
+        "Kitulgala_Mid": {"elevation_m": 420.0, "lag_hours": 16.0, "weight": 0.25},
+        "Deraniyagala_Seethawaka": {"elevation_m": 350.0, "lag_hours": 14.0, "weight": 0.18},
+        "Hanwella_Lower_Floodplain": {"elevation_m": 12.0, "lag_hours": 0.0, "weight": 0.15},
+    }
