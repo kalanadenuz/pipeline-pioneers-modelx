@@ -21,3 +21,11 @@ class AlertConfig:
         "Deraniyagala_Seethawaka": {"elevation_m": 350.0, "lag_hours": 14.0, "weight": 0.18},
         "Hanwella_Lower_Floodplain": {"elevation_m": 12.0, "lag_hours": 0.0, "weight": 0.15},
     }
+
+
+@dataclass(frozen=True)
+class PhysicsConfig:
+    asmi_decay_factor: float = 0.90
+    soil_saturation_threshold_mm: float = 180.0
+    runoff_coefficient_dry: float = 0.25
+    runoff_coefficient_saturated: float = 0.92
