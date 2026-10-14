@@ -2,3 +2,6 @@
 
 ModelX 2.0 Hackathon | Domain 02: Climate & Disaster Risk
 Team: Pipeline Pioneers
+
+## Architecture Overview
+Coupling satellite precipitation, antecedent soil moisture, and topological elevation.
