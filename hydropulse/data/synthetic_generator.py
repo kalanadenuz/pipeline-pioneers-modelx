@@ -118,3 +118,6 @@ class KelaniDataGenerator:
         df.loc[peak_idx + 1, "hanwella_stage_m"] = 3.05
         df.loc[peak_idx + 1, "plot_inundation_depth_m"] = 0.60
         return df
+
+
+# Monsoonal seasonal intensity factors tuned to Kelani wet-zone
