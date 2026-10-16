@@ -5,3 +5,6 @@ Team: Pipeline Pioneers
 
 ## Architecture Overview
 Coupling satellite precipitation, antecedent soil moisture, and topological elevation.
+
+## Offline Reproducibility
+Pipeline supports 100% offline self-contained execution via pre-cached physical datasets.
