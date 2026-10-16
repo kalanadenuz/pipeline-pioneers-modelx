@@ -29,3 +29,7 @@ class PhysicsConfig:
     soil_saturation_threshold_mm: float = 180.0
     runoff_coefficient_dry: float = 0.25
     runoff_coefficient_saturated: float = 0.92
+
+
+    # Downstream staff gauge baseline datums
+    hanwella_baseflow_datum_m: float = 1.80
