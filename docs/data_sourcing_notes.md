@@ -11,3 +11,6 @@ Surface runoff rasters at 0.1 degree.
 NASA GPM: Free open science.
 Copernicus CDS: Open Access.
 SRTM: Public Domain.
+
+## Catchment Masking
+Bounding box: (6.70N, 7.25N, 79.85E, 80.60E) encapsulates total 2,292 km² drainage area.
