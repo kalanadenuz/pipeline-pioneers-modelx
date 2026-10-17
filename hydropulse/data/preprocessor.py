@@ -35,3 +35,6 @@ class DataPreprocessor:
         total_precip = df["rain_upstream_weighted_mm"].sum()
         total_runoff = df["surface_runoff_mm"].sum()
         return total_runoff <= (total_precip * 1.05)
+
+
+    # Enforces 6.70-7.25N and 79.85-80.60E catchment boundary
