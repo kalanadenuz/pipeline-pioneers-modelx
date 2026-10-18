@@ -38,3 +38,10 @@ class DataPreprocessor:
 
 
     # Enforces 6.70-7.25N and 79.85-80.60E catchment boundary
+
+
+    def clean_and_impute(self, df, telemetry_latency_hours=2.0):
+        cleaned = df.copy()
+        if cleaned.isna().sum().sum() > 0:
+            cleaned = cleaned.ffill().bfill()
+        return cleaned, {'status': 'VALID'}
