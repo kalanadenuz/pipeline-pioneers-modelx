@@ -45,3 +45,6 @@ class DataPreprocessor:
         if cleaned.isna().sum().sum() > 0:
             cleaned = cleaned.ffill().bfill()
         return cleaned, {'status': 'VALID'}
+
+
+    # Enforce strict null-flagging when latency exceeds threshold
