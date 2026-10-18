@@ -8,3 +8,6 @@ Coupling satellite precipitation, antecedent soil moisture, and topological elev
 
 ## Offline Reproducibility
 Pipeline supports 100% offline self-contained execution via pre-cached physical datasets.
+
+### Data Cleaning Protocol
+Bilinear spatial interpolation and forward-fill imputation with strict null-flagging.
