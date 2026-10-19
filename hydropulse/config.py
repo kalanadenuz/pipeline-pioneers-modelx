@@ -33,3 +33,14 @@ class PhysicsConfig:
 
     # Downstream staff gauge baseline datums
     hanwella_baseflow_datum_m: float = 1.80
+
+
+@dataclass(frozen=True)
+class ModelConfig:
+    forecast_horizons_hours: Tuple[int, ...] = (14, 18, 20, 24)
+    target_lead_time_hours: int = 18
+    conformal_coverage: float = 0.90
+    significance_level_alpha: float = 0.10
+    max_telemetry_latency_hours: float = 6.0
+    safe_failure_uncertainty_expansion: float = 0.40
+    dam_spill_threshold_rainfall_mm: float = 150.0
