@@ -16,3 +16,5 @@ SRTM: Public Domain.
 Bounding box: (6.70N, 7.25N, 79.85E, 80.60E) encapsulates total 2,292 km² drainage area.
 
 Short gaps (<3h) imputed via forward-fill; preserves physical time continuity.
+
+4-hour frequency chosen: balances satellite pass frequency with computational responsiveness.
