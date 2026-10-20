@@ -48,3 +48,9 @@ class DataPreprocessor:
 
 
     # Enforce strict null-flagging when latency exceeds threshold
+
+
+    def verify_physical_conservation(self, df: pd.DataFrame) -> bool:
+        total_precip = df["rain_upstream_weighted_mm"].sum()
+        total_runoff = df["surface_runoff_mm"].sum()
+        return total_runoff <= (total_precip * 1.05)
