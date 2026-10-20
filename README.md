@@ -11,3 +11,5 @@ Pipeline supports 100% offline self-contained execution via pre-cached physical 
 
 ### Data Cleaning Protocol
 Bilinear spatial interpolation and forward-fill imputation with strict null-flagging.
+
+- **Physical Conservation Gate:** Enforces that surface runoff never exceeds input precipitation mass.
