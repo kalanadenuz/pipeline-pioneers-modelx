@@ -1,0 +1,2 @@
+Milestone 1: Data Pipeline & Catchment Masking -> PASSED
+Zero missing rasters on 2018-2024 partitions; automated forward-fill validated.
