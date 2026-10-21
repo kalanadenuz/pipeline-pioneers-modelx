@@ -18,3 +18,5 @@ Bounding box: (6.70N, 7.25N, 79.85E, 80.60E) encapsulates total 2,292 km² drain
 Short gaps (<3h) imputed via forward-fill; preserves physical time continuity.
 
 4-hour frequency chosen: balances satellite pass frequency with computational responsiveness.
+
+Milestone 1 verified: spatial clipping to Kelani Basin bounding box complete.
