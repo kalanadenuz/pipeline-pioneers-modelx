@@ -20,3 +20,6 @@ Short gaps (<3h) imputed via forward-fill; preserves physical time continuity.
 4-hour frequency chosen: balances satellite pass frequency with computational responsiveness.
 
 Milestone 1 verified: spatial clipping to Kelani Basin bounding box complete.
+
+## Sensor Artifacts & Cloud Occlusion
+Optical sensors fail under monsoonal cloud decks. Microwave radar bypasses clouds.
