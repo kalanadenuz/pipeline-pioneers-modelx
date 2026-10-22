@@ -41,3 +41,6 @@ class TelemetryConnector:
             "alert_threshold_m": 7.00,
             "major_flood_m": 9.00,
         }
+
+
+        # Priority given to microwave radar channels over infrared
