@@ -23,3 +23,5 @@ Milestone 1 verified: spatial clipping to Kelani Basin bounding box complete.
 
 ## Sensor Artifacts & Cloud Occlusion
 Optical sensors fail under monsoonal cloud decks. Microwave radar bypasses clouds.
+
+Telemetry latency: GPM Early Run (2h), Late Run (14h), Final Run (3 months). Early run used for real-time inference.
