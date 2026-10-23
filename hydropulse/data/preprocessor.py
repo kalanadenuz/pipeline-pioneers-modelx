@@ -35,22 +35,3 @@ class DataPreprocessor:
         total_precip = df["rain_upstream_weighted_mm"].sum()
         total_runoff = df["surface_runoff_mm"].sum()
         return total_runoff <= (total_precip * 1.05)
-
-
-    # Enforces 6.70-7.25N and 79.85-80.60E catchment boundary
-
-
-    def clean_and_impute(self, df, telemetry_latency_hours=2.0):
-        cleaned = df.copy()
-        if cleaned.isna().sum().sum() > 0:
-            cleaned = cleaned.ffill().bfill()
-        return cleaned, {'status': 'VALID'}
-
-
-    # Enforce strict null-flagging when latency exceeds threshold
-
-
-    def verify_physical_conservation(self, df: pd.DataFrame) -> bool:
-        total_precip = df["rain_upstream_weighted_mm"].sum()
-        total_runoff = df["surface_runoff_mm"].sum()
-        return total_runoff <= (total_precip * 1.05)
