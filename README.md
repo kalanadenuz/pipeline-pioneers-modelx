@@ -13,3 +13,5 @@ Pipeline supports 100% offline self-contained execution via pre-cached physical 
 Bilinear spatial interpolation and forward-fill imputation with strict null-flagging.
 
 - **Physical Conservation Gate:** Enforces that surface runoff never exceeds input precipitation mass.
+
+- **Latency QA:** Telemetry freshness evaluated on every ingestion cycle.
