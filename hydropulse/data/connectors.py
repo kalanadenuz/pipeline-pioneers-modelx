@@ -44,3 +44,6 @@ class TelemetryConnector:
 
 
         # Priority given to microwave radar channels over infrared
+
+
+        # Check latency against max allowed threshold (6 hours)
