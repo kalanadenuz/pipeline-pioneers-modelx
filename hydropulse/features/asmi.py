@@ -21,3 +21,6 @@ class ASMICalculator:
     def estimate_saturation_percentage(self, asmi_series: pd.Series) -> pd.Series:
         pct = (asmi_series / self.threshold) * 100.0
         return pct.clip(lower=0.0, upper=100.0).rename("soil_saturation_pct")
+
+
+    # Estimates saturation percentage against effective retention capacity
