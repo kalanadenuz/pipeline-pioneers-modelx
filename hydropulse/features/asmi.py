@@ -24,3 +24,6 @@ class ASMICalculator:
 
 
     # Estimates saturation percentage against effective retention capacity
+
+
+        # Default threshold: 180mm cumulative memory
