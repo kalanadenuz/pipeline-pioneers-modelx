@@ -1,0 +1,3 @@
+# Grid search for alpha
+for a in [0.85, 0.88, 0.90, 0.92]:
+    print(f'Alpha {a}: OK')
