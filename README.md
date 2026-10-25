@@ -15,3 +15,5 @@ Bilinear spatial interpolation and forward-fill imputation with strict null-flag
 - **Physical Conservation Gate:** Enforces that surface runoff never exceeds input precipitation mass.
 
 - **Latency QA:** Telemetry freshness evaluated on every ingestion cycle.
+
+- **ASMI Soil Memory:** Multi-day exponential decay (alpha = 0.90) modeling saturation transition.
