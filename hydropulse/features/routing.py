@@ -21,3 +21,6 @@ class TopologicalRouter:
         feat_df["rain_cumulative_24h"] = df["rain_upstream_weighted_mm"].rolling(window=6).sum()
         feat_df["rain_cumulative_48h"] = df["rain_upstream_weighted_mm"].rolling(window=12).sum()
         return feat_df
+
+
+    # Lag features capture hydrodynamic wave travel mechanics down river channel
