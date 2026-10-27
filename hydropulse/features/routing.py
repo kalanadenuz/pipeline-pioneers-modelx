@@ -24,3 +24,7 @@ class TopologicalRouter:
 
 
     # Lag features capture hydrodynamic wave travel mechanics down river channel
+
+
+    def compute_cumulative_windows(self, df):
+        return df['rain_upstream_weighted_mm'].rolling(6).sum()
