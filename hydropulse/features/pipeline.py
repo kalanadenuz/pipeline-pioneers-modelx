@@ -38,3 +38,6 @@ class HydrologicalFeaturePipeline:
         X = features.loc[valid_idx]
         y = target.loc[valid_idx]
         return X, y, list(X.columns)
+
+
+        # Non-linear interaction: rain * saturation coupling
