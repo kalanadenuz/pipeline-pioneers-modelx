@@ -41,3 +41,6 @@ class HydrologicalFeaturePipeline:
 
 
         # Non-linear interaction: rain * saturation coupling
+
+
+        # Add kinematic wave flood surge prior feature
