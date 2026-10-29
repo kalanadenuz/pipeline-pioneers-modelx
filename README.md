@@ -19,3 +19,6 @@ Bilinear spatial interpolation and forward-fill imputation with strict null-flag
 - **ASMI Soil Memory:** Multi-day exponential decay (alpha = 0.90) modeling saturation transition.
 
 - **Feature Pipeline:** 26 physical features combining ASMI memory, topological lags, and interaction terms.
+
+### Benchmark Models
+Evaluated against Naive Persistence and Standard Linear Lag baselines.
