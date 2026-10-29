@@ -1,0 +1,2 @@
+Milestone 2: Feature Engineering & Baseline Setup -> PASSED
+Physical sanity check passed (runoff <= precip mass); ASMI correlates with monsoons.
