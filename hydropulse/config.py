@@ -44,3 +44,6 @@ class ModelConfig:
     max_telemetry_latency_hours: float = 6.0
     safe_failure_uncertainty_expansion: float = 0.40
     dam_spill_threshold_rainfall_mm: float = 150.0
+
+
+    # Downstream plot inundation threshold: 0.50m surge causes localized flooding
