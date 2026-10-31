@@ -120,3 +120,6 @@ class HydroBoostRegressor:
         for tree in self.trees:
             y_pred += self.learning_rate * tree.predict(X_mat)
         return np.maximum(0.0, y_pred)
+
+
+        # Subsample feature splits for ensemble diversity
