@@ -126,3 +126,6 @@ class HydroBoostRegressor:
 
 
     # Gradient boosting residual updates with shrinkage factor
+
+
+        # Track feature importances across all split nodes
