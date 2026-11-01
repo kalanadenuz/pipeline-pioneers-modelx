@@ -123,3 +123,6 @@ class HydroBoostRegressor:
 
 
         # Subsample feature splits for ensemble diversity
+
+
+    # Gradient boosting residual updates with shrinkage factor
