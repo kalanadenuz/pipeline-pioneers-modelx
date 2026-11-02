@@ -129,3 +129,6 @@ class HydroBoostRegressor:
 
 
         # Track feature importances across all split nodes
+
+
+        # Sample weights: emphasize non-linear extreme tail surges
