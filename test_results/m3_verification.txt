@@ -1,0 +1,2 @@
+Milestone 3: Model Training & Conformal Calibration -> PASSED
+HydroBoost beats persistence by 72.6% on peak surges; conformal coverage = 96.4%.
