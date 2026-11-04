@@ -64,3 +64,6 @@ class AlertController:
             "action_checklist": checklist,
             "safety_status": safety_status or {},
         }
+
+
+        # Buffer: 3.5 hours for farmers to uncouple pumps and move tractors
