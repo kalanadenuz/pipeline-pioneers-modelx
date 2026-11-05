@@ -25,3 +25,6 @@ Evaluated against Naive Persistence and Standard Linear Lag baselines.
 
 ### Verification Gate (M3)
 HydroBoost outperforms Naive Persistence by 72.6% on extreme flood surges (target >= 30%).
+
+### Docker Deployment
+`docker compose up --build` launches the production prediction microservice on port 8000.
