@@ -30,3 +30,5 @@ Telemetry latency: GPM Early Run (2h), Late Run (14h), Final Run (3 months). Ear
 When latency exceeds 6 hours, deterministic point predictions must halt.
 
 Causal wave routing verified: mountain storm at T produces downstream surge at T+16h.
+
+Dashboard: low-bandwidth mobile PWA designed for 2G rural mobile connections.
