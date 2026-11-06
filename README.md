@@ -28,3 +28,6 @@ HydroBoost outperforms Naive Persistence by 72.6% on extreme flood surges (targe
 
 ### Docker Deployment
 `docker compose up --build` launches the production prediction microservice on port 8000.
+
+### Mobile PWA Dashboard
+Accessible at `http://localhost:8000/dashboard`.
