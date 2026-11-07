@@ -1,0 +1,49 @@
+{
+  "catchment_name": "Kelani River Basin",
+  "bounding_box": {
+    "min_latitude": 6.7,
+    "max_latitude": 7.25,
+    "min_longitude": 79.85,
+    "max_longitude": 80.6
+  },
+  "total_drainage_area_km2": 2292.0,
+  "sub_catchments": {
+    "Norton_Bridge_Upper": {
+      "elevation_m": 1250.0,
+      "lag_hours": 24.0,
+      "weight": 0.22
+    },
+    "Castlereigh_Catchment": {
+      "elevation_m": 1100.0,
+      "lag_hours": 22.0,
+      "weight": 0.2
+    },
+    "Kitulgala_Mid": {
+      "elevation_m": 420.0,
+      "lag_hours": 16.0,
+      "weight": 0.25
+    },
+    "Deraniyagala_Seethawaka": {
+      "elevation_m": 350.0,
+      "lag_hours": 14.0,
+      "weight": 0.18
+    },
+    "Hanwella_Lower_Floodplain": {
+      "elevation_m": 12.0,
+      "lag_hours": 0.0,
+      "weight": 0.15
+    }
+  },
+  "physics_parameters": {
+    "asmi_decay_factor_alpha": 0.9,
+    "soil_saturation_threshold_mm": 180.0,
+    "runoff_coefficient_dry": 0.25,
+    "runoff_coefficient_saturated": 0.92
+  },
+  "data_sources": {
+    "precipitation": "NASA GPM IMERG V06 (0.1 deg) [DOI: 10.5067/GPM/IMERG/3B-HH-E/06]",
+    "soil_moisture": "ECMWF Copernicus ERA5-Land Reanalysis (0.1 deg) [DOI: 10.24381/cds.e2161bac]",
+    "elevation_model": "USGS SRTM 30m 1 Arc-Second DEM [DOI: 10.5067/MEASURES/SRTM/SRTMGL1.003]",
+    "ground_truth_gauges": "Sri Lanka Irrigation Department & DMC (Hanwella/Nagalagam St)"
+  }
+}
