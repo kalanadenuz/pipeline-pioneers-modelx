@@ -1,0 +1,53 @@
+{
+  "benchmark_evaluation": {
+    "evaluation_partition": "Kelani River Basin Chronological Holdout (2021-2024)",
+    "extreme_test_event": "May 2024 Monsoon Flood Wave Inundation",
+    "sample_count": 10942,
+    "feature_count": 26,
+    "metrics": {
+      "overall_mae_m": {
+        "HydroBoost": 0.157,
+        "LinearLag": 0.109,
+        "NaivePersistence": 0.305
+      },
+      "overall_rmse_m": {
+        "HydroBoost": 0.221,
+        "LinearLag": 0.236,
+        "NaivePersistence": 0.613
+      },
+      "peak_surge_tail_mae_m": {
+        "HydroBoost": 0.397,
+        "LinearLag": 0.364,
+        "NaivePersistence": 1.449
+      },
+      "critical_success_index_csi": {
+        "HydroBoost": 0.662,
+        "LinearLag": 0.682,
+        "NaivePersistence": 0.277
+      },
+      "conformal_empirical_coverage": {
+        "target_confidence": 0.9,
+        "calibrated_margin_m": 0.432,
+        "empirical_coverage_rate": 0.964,
+        "mean_interval_width_m": 0.638
+      },
+      "advance_lead_time_hours": {
+        "HydroBoost": 16.0,
+        "LinearLag": 16.0,
+        "NaivePersistence": 0.0
+      },
+      "cpu_inference_latency_ms": {
+        "HydroBoost": 8.6,
+        "LinearLag": 1.2,
+        "NaivePersistence": 0.1
+      }
+    },
+    "verification_gates": {
+      "M1_data_integrity_check": "PASSED (Physical conservation law verified, runoff <= precip)",
+      "M2_baseline_logging": "PASSED (Persistence and Linear Lag baselines logged)",
+      "M3_peak_surge_improvement": "PASSED (72.6% MAE improvement over persistence, target >= 30%)",
+      "M3_conformal_coverage": "PASSED (96.4% empirical coverage, target >= 90%)",
+      "M4_latency_safe_failure": "PASSED (Safe failure state triggered on latency > 6.0h)"
+    }
+  }
+}
