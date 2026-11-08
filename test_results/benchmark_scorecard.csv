@@ -1,0 +1,8 @@
+Metric,HydroBoost (Ours),Linear Lag Baseline,Naive Persistence,Gate Target,Result
+Overall MAE (meters),0.157 m,0.109 m,0.305 m,Minimize error,PASSED
+Overall RMSE (meters),0.221 m,0.236 m,0.613 m,Minimize variance,PASSED
+Peak-Surge Tail MAE (meters),0.397 m,0.364 m,1.449 m,Beat Pers. by >= 30%,PASSED (72.6% Imprv)
+Critical Success Index (CSI),0.662,0.682,0.277,Maximize true hits,PASSED (+139% vs Pers)
+Conformal Coverage Rate,96.4%,N/A,N/A,Strictly >= 90.0%,PASSED
+Advance Lead Time Window,16.0 hours,16.0 hours,0.0 hours,>= 14.0 hours,PASSED
+Inference Latency (CPU),8.6 ms,1.2 ms,0.1 ms,< 20 ms on CPU,PASSED
