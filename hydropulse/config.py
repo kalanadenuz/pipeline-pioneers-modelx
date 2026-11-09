@@ -1,27 +1,26 @@
-"""Configuration settings for Kelani Basin."""
+"""Configuration parameters for the HydroPulse early-warning flood engine."""
 from dataclasses import dataclass
-from typing import Tuple
+from typing import Dict, Tuple
 
 @dataclass(frozen=True)
 class CatchmentConfig:
     basin_name: str = "Kelani River Basin"
     bounding_box: Tuple[float, float, float, float] = (6.70, 7.25, 79.85, 80.60)
     total_area_km2: float = 2292.0
+    sub_catchments: Dict[str, Dict[str, float]] = None
 
-
-@dataclass(frozen=True)
-class AlertConfig:
-    low_lying_warning_surge_m: float = 0.50
-
-
-    sub_catchments = {
-        "Norton_Bridge_Upper": {"elevation_m": 1250.0, "lag_hours": 24.0, "weight": 0.22},
-        "Castlereigh_Catchment": {"elevation_m": 1100.0, "lag_hours": 22.0, "weight": 0.20},
-        "Kitulgala_Mid": {"elevation_m": 420.0, "lag_hours": 16.0, "weight": 0.25},
-        "Deraniyagala_Seethawaka": {"elevation_m": 350.0, "lag_hours": 14.0, "weight": 0.18},
-        "Hanwella_Lower_Floodplain": {"elevation_m": 12.0, "lag_hours": 0.0, "weight": 0.15},
-    }
-
+    def __post_init__(self):
+        object.__setattr__(
+            self,
+            "sub_catchments",
+            {
+                "Norton_Bridge_Upper": {"elevation_m": 1250.0, "lag_hours": 24.0, "weight": 0.22},
+                "Castlereigh_Catchment": {"elevation_m": 1100.0, "lag_hours": 22.0, "weight": 0.20},
+                "Kitulgala_Mid": {"elevation_m": 420.0, "lag_hours": 16.0, "weight": 0.25},
+                "Deraniyagala_Seethawaka": {"elevation_m": 350.0, "lag_hours": 14.0, "weight": 0.18},
+                "Hanwella_Lower_Floodplain": {"elevation_m": 12.0, "lag_hours": 0.0, "weight": 0.15},
+            },
+        )
 
 @dataclass(frozen=True)
 class PhysicsConfig:
@@ -29,11 +28,6 @@ class PhysicsConfig:
     soil_saturation_threshold_mm: float = 180.0
     runoff_coefficient_dry: float = 0.25
     runoff_coefficient_saturated: float = 0.92
-
-
-    # Downstream staff gauge baseline datums
-    hanwella_baseflow_datum_m: float = 1.80
-
 
 @dataclass(frozen=True)
 class ModelConfig:
@@ -45,5 +39,9 @@ class ModelConfig:
     safe_failure_uncertainty_expansion: float = 0.40
     dam_spill_threshold_rainfall_mm: float = 150.0
 
-
-    # Downstream plot inundation threshold: 0.50m surge causes localized flooding
+@dataclass(frozen=True)
+class AlertConfig:
+    low_lying_warning_surge_m: float = 0.50
+    alert_minor_flood_surge_m: float = 0.80
+    alert_major_flood_surge_m: float = 1.20
+    lead_time_buffer_hours: float = 3.5
