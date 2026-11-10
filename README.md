@@ -278,7 +278,7 @@ pipeline-pioneers-modelx/
 ├── LICENSE                       # MIT Open-Source License
 ├── TECHNICAL_REPORT.md           # Full technical report
 ├── EXECUTIVE_SUMMARY.md          # Two-page executive brief
-└── DEMO_VIDEO_SCRIPT.md          # 3-minute video recording script & judge defense guide
+└── 
 ```
 
 ---
