@@ -14,7 +14,7 @@ class KelaniDataGenerator:
         timestamps = pd.date_range(start=start_date, end=end_date, freq=f"{freq_hours}h")
         n = len(timestamps)
 
-        day_of_year = timestamps.dayofyear.values
+        day_of_year = getattr(timestamps, 'day_of_year', getattr(timestamps, 'dayofyear', None)).values
         sw_monsoon = np.exp(-0.5 * ((day_of_year - 150) / 30) ** 2) * 1.5
         sim_monsoon = np.exp(-0.5 * ((day_of_year - 305) / 25) ** 2) * 1.8
         seasonal_intensity = 0.2 + sw_monsoon + sim_monsoon
