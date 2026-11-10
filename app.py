@@ -25,18 +25,24 @@ st.markdown("""
     /* Responsive base font sizing and line height */
     html, body, [class*="css"] {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        font-size: 16px;
+        font-size: 17px !important;
         line-height: 1.6;
         color: #0f172a;
     }
 
-    /* Main container padding for laptop screens */
-    .block-container {
-        padding-top: 2rem !important;
-        padding-bottom: 3rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
-        max-width: 1400px;
+    /* 100% True Full-Width Fluid Responsive Layout */
+    .main .block-container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 2.5rem !important;
+        padding-left: 2.5rem !important;
+        padding-right: 2.5rem !important;
+    }
+
+    [data-testid="stAppViewContainer"] > .main {
+        max-width: 100% !important;
+        width: 100% !important;
     }
 
     /* Clean white cards with subtle borders */
@@ -317,7 +323,7 @@ with tab_live:
             spine.set_linewidth(1.0)
 
         plt.tight_layout()
-        st.pyplot(fig)
+        st.pyplot(fig, use_container_width=True)
 
     with col_dispatch:
         st.subheader("DMC / Agrarian Advisory")
