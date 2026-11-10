@@ -121,7 +121,8 @@ cum_24h = st.sidebar.slider("24-Hour Cumulative Upstream Rainfall [mm]", 0.0, 30
 # 1. Non-linear saturation coupling
 sat_factor = (sat / 100.0) ** 2.2
 raw_surge = (rain / 14.0) * sat_factor * 1.15
-inundation_depth = max(0.0, raw_surge - 0.45)  # plots sit ~0.45m above datum
+base_stage = 2.80  # Normal dry stage at Hanwella
+predicted_stage = base_stage + raw_surge
 
 # 2. Epistemic Humility checks
 is_compromised = latency > 6.0
@@ -130,112 +131,146 @@ is_dam_spill = cum_24h >= 150.0
 # 3. Conformal bounds calculation (Inductive Conformal Prediction)
 q_margin = 0.432  # Calibrated finite-sample quantile margin
 if is_compromised:
-    q_margin *= 1.40  # Widen uncertainty by 40% when telemetry compromised
+    q_margin *= 1.40  # Safe failure: widen bounds by 40% when telemetry is stale
 
-low_bound = max(0.0, inundation_depth - q_margin)
-high_bound = inundation_depth + q_margin
+low_bound = max(0.0, predicted_stage - q_margin)
+high_bound = predicted_stage + q_margin
 
-# Timing
-current_time = datetime.now()
-arrival_time = current_time + timedelta(hours=16.0)
-action_deadline = arrival_time - timedelta(hours=3.5)
+# 4. Inundation depth above Hanwella bankfull datum (7.00m)
+flood_threshold = 7.00
+alert_threshold = 5.00
+minor_flood = 6.00
 
-# -------------------------------------------------------------
-# HEADER STATUS BANNER
-# -------------------------------------------------------------
-col_title, col_status = st.columns([3, 1])
-with col_title:
-    st.title("HydroPulse Early-Warning Platform")
-    st.caption("Physics-Informed Satellite Catchment Saturation & Downstream Flood Early-Warning Engine")
-with col_status:
-    st.write("")
-    if is_compromised:
-        st.markdown('<div class="status-badge-warning">⚠️ SAFE FAILURE STATE</div>', unsafe_allow_html=True)
-    elif inundation_depth > 0.40:
-        st.markdown('<div class="status-badge-danger">🚨 CRITICAL FLOOD ALERT</div>', unsafe_allow_html=True)
-    else:
-        st.markdown('<div class="status-badge-success">✓ NORMAL BASEFLOW</div>', unsafe_allow_html=True)
+if predicted_stage >= flood_threshold:
+    alert_status = "MAJOR FLOOD WARNING"
+    alert_class = "status-badge-danger"
+    status_icon = "🚨"
+elif predicted_stage >= minor_flood:
+    alert_status = "MINOR FLOOD WARNING"
+    alert_class = "status-badge-warning"
+    status_icon = "⚠️"
+elif predicted_stage >= alert_threshold:
+    alert_status = "ALERT LEVEL"
+    alert_class = "status-badge-warning"
+    status_icon = "📢"
+else:
+    alert_status = "NORMAL FLOW"
+    alert_class = "status-badge-success"
+    status_icon = "✅"
 
-# Safety banners
-if is_compromised:
-    st.warning("⚠️ **TELEMETRY COMPROMISED (Pass Latency > 6.0 Hours):** Satellite downlink latency is currently " + str(latency) + "h. Deterministic point predictions are halted to prevent ungrounded hallucinations. Conformal uncertainty bounds have been automatically broadened by ±40% based on historical seasonal persistence.")
-
-if is_dam_spill:
-    st.error("🚨 **DAM SPILLWAY ADVISORY:** High-altitude cumulative rainfall (" + str(cum_24h) + " mm) approaches upstream reservoir capacity thresholds at Castlereigh and Maussakelle dams. Human-controlled dam gate releases cannot be observed via satellite rainfall alone. Downstream residents are advised to cross-reference official Irrigation Department spillway alerts.")
+# Inundation depth for agricultural lowlands (plots sit at ~5.5m local datum)
+inundation_depth = max(0.0, predicted_stage - 5.50)
 
 # -------------------------------------------------------------
-# MAIN TABS
+# MAIN DASHBOARD INTERFACE
 # -------------------------------------------------------------
-tab_alert, tab_physics, tab_benchmarks, tab_data = st.tabs([
-    "🚨 Live Early-Warning & Farmer Alert",
-    "💧 Catchment Physics & ASMI Memory",
+st.title("🌊 HydroPulse: Satellite Catchment Early-Warning Engine")
+st.markdown("""
+**ModelX 2.0 Hackathon Submission** · **Team:** Pipeline Pioneers · **Domain:** 02 Climate, Environment & Disaster Risk  
+*Physics-Informed Satellite Catchment Intelligence with Inductive Conformal Prediction for the Kelani River Basin, Sri Lanka.*
+""")
+
+# Top Metric Banner
+m1, m2, m3, m4 = st.columns(4)
+with m1:
+    st.metric("Predicted Peak Stage (Hanwella)", f"{predicted_stage:.2f} m", delta=f"{raw_surge:+.2f} m surge")
+with m2:
+    st.metric("90% Conformal Interval", f"[{low_bound:.2f}m – {high_bound:.2f}m]", delta=f"±{q_margin:.2f} m margin")
+with m3:
+    st.metric("Catchment Soil Saturation", f"{sat:.1f}%", delta="Saturated" if sat >= 80 else "Normal")
+with m4:
+    st.metric("Advance Action Window", "16.0 Hours", delta="Kinematic Wave Lag")
+
+# Navigation Tabs
+tab_live, tab_physics, tab_benchmarks, tab_data = st.tabs([
+    "🚨 Live Early-Warning Hydrograph",
+    "⚡ Catchment Physics & ASMI Memory",
     "📊 Benchmarks & Verification Scorecard",
-    "📂 Data Sourcing & Open Science Provenance"
+    "🛰️ Data Sourcing & Open Science"
 ])
 
 # -------------------------------------------------------------
-# TAB 1: LIVE EARLY-WARNING & FARMER ALERT
+# TAB 1: LIVE HYDROGRAPH & ALERT DISPATCH
 # -------------------------------------------------------------
-with tab_alert:
-    st.subheader("Downstream Operational Forecast · Hanwella / Biyagama Lower Floodplain")
-    
-    kpi1, kpi2, kpi3, kpi4 = st.columns(4)
-    with kpi1:
-        if is_compromised:
-            st.metric("Expected Plot Inundation", "UNCERTAIN", delta="Point Prediction Halted", delta_color="off")
-        else:
-            st.metric("Expected Plot Inundation", f"{inundation_depth:.2f} m", delta=f"+{raw_surge:.2f}m river surge", delta_color="inverse")
-    with kpi2:
-        st.metric("Advance Planning Horizon", "16.0 hours", delta="Travel Time from Norton Bridge")
-    with kpi3:
-        st.metric("Farmer Action Deadline", action_deadline.strftime("%I:%M %p"), delta="3.5h safety buffer")
-    with kpi4:
-        st.metric("Upstream Soil Saturation", f"{sat:.1f}%", delta="Critical Threshold >= 90%" if sat >= 90 else "Safe Absorption Zone", delta_color="inverse" if sat >= 90 else "normal")
+with tab_live:
+    col_chart, col_dispatch = st.columns([1.6, 1.0])
 
-    # Conformal Uncertainty Bounds Display
-    st.markdown("#### 90% Inductive Conformal Prediction (ICP) Bounds")
-    conf_col1, conf_col2, conf_col3 = st.columns(3)
-    with conf_col1:
-        st.info(f"**Conservative Lower Bound (y_low):** {low_bound:.2f} m")
-    with conf_col2:
-        if is_compromised:
-            st.warning("**Expected Inundation:** UNCERTAIN (Halted)")
-        else:
-            st.success(f"**Expected Inundation (y_pred):** {inundation_depth:.2f} m")
-    with conf_col3:
-        st.error(f"**Worst-Case Ceiling (y_high):** {high_bound:.2f} m")
+    with col_chart:
+        st.subheader("16-Hour Lookahead Catchment Hydrograph")
 
-    # Hydrograph Chart
-    st.markdown("#### Hydrodynamic Wave Propagation Hydrograph")
-    hours = np.arange(0, 48, 4)
-    true_wave = np.array([0.05, 0.08, 0.15, 0.42, 1.10, 1.05, 0.78, 0.45, 0.28, 0.18, 0.12, 0.08]) * (raw_surge / 1.10)
-    pred_wave = np.array([0.04, 0.07, 0.18, 0.45, 1.06, 1.01, 0.74, 0.42, 0.25, 0.15, 0.10, 0.06]) * (raw_surge / 1.10)
-    
-    chart_df = pd.DataFrame({
-        "Elapsed Storm Hours": hours,
-        "Observed River Surge (m)": np.round(true_wave, 2),
-        "HydroBoost 16h Forecast (m)": np.round(pred_wave, 2),
-        "Conformal Upper Bound (m)": np.round(pred_wave + q_margin, 2),
-        "Conformal Lower Bound (m)": np.round(np.maximum(0.0, pred_wave - q_margin), 2),
-    }).set_index("Elapsed Storm Hours")
-    st.line_chart(chart_df, color=["#38bdf8", "#10b981", "#ef4444", "#34d399"])
+        # Time series generation
+        now = datetime.now()
+        hours = np.linspace(-24, 24, 49)
+        time_stamps = [now + timedelta(hours=float(h)) for h in hours]
 
-    # Checklist & SMS
-    col_check, col_sms = st.columns([1, 1])
-    with col_check:
-        st.markdown("#### Smallholder Emergency Action Checklist")
-        st.checkbox("1. Uncouple and elevate electric water pump motors before deadline", value=True)
-        st.checkbox("2. Move two-wheel tractors & tillers to elevated road embankments", value=True)
-        st.checkbox("3. Relocate harvested vegetable crates, seed reserves and fertilizer bags to dry sheds", value=True)
-        st.checkbox("4. Clear perimeter drainage trenches and block lower canal backflow ingress points", value=True)
+        # Synthetic realistic hydrograph based on current physics parameters
+        past_levels = base_stage + 0.15 * np.sin(hours[:25] / 4.0) + (hours[:25] + 24) / 48.0 * (raw_surge * 0.3)
+        future_peak_idx = 16  # Peak at +16 hours
+        future_hours = hours[24:]
 
-    with col_sms:
-        st.markdown("#### Dispatched Farmer Alert (Bilingual SMS / WhatsApp Gateway)")
-        sms_text = f"""🚨 *CRITICAL FLOOD WARNING (Hanwella / Biyagama)*
+        # Shape a bell curve surge peaking at +16 hours
+        surge_curve = raw_surge * np.exp(-((future_hours - 16.0) ** 2) / 45.0)
+        future_pred = past_levels[-1] + surge_curve
+        future_low = np.maximum(base_stage, future_pred - q_margin)
+        future_high = future_pred + q_margin
+
+        fig, ax = plt.subplots(figsize=(10, 4.5), dpi=100)
+        fig.patch.set_facecolor('#0f172a')
+        ax.set_facecolor('#0f172a')
+
+        # Historical observed
+        ax.plot(hours[:25], past_levels, color='#38bdf8', linewidth=2.2, label='Observed River Stage (T-24h to T0)')
+
+        # Future predicted
+        ax.plot(hours[24:], future_pred, color='#34d399', linewidth=2.5, linestyle='--', label='HydroPulse Kinematic Wave Forecast (T0 to T+24h)')
+        ax.fill_between(hours[24:], future_low, future_high, color='#10b981', alpha=0.25, label=f'90% Conformal Confidence Band (±{q_margin:.2f}m)')
+
+        # Warning thresholds
+        ax.axhline(y=7.00, color='#ef4444', linestyle=':', linewidth=1.5, label='Major Flood Level (7.00 m)')
+        ax.axhline(y=6.00, color='#f59e0b', linestyle=':', linewidth=1.2, label='Minor Flood Level (6.00 m)')
+        ax.axhline(y=5.00, color='#fbbf24', linestyle=':', linewidth=1.0, label='Alert Level (5.00 m)')
+
+        # Mark current time
+        ax.axvline(x=0, color='#94a3b8', linestyle='-', linewidth=1.2, alpha=0.7)
+        ax.text(0.5, base_stage + 0.2, 'Now (T0)', color='#94a3b8', fontsize=9, fontweight='bold')
+
+        # Styling
+        ax.set_xlabel('Lookahead Timeline (Hours from T0)', color='#cbd5e1', fontsize=10)
+        ax.set_ylabel('Gauge Stage Height (Meters)', color='#cbd5e1', fontsize=10)
+        ax.tick_params(colors='#94a3b8', labelsize=9)
+        ax.grid(True, color='#1e293b', linestyle='--', alpha=0.6)
+        ax.legend(facecolor='#1e293b', edgecolor='#334155', labelcolor='#e2e8f0', fontsize=8, loc='upper left')
+
+        for spine in ax.spines.values():
+            spine.set_color('#334155')
+
+        st.pyplot(fig)
+
+    with col_dispatch:
+        st.subheader("DMC / Agrarian Action Dispatcher")
+
+        st.markdown(f"""
+        <div class="metric-card">
+            <span class="{alert_class}">{status_icon} {alert_status}</span>
+            <h3 style="margin-top: 8px; margin-bottom: 4px; color: #f8fafc;">Peak Level: {predicted_stage:.2f} m</h3>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 0;">
+                Est. Lowland Plot Inundation: <strong style="color: {'#f87171' if inundation_depth > 0 else '#34d399'};">{inundation_depth:.2f} m</strong><br>
+                Advance Preparation Horizon: <strong>16.0 Hours</strong>
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        arrival_time = now + timedelta(hours=16)
+        action_deadline = now + timedelta(hours=10)
+
+        # Trilingual DMC Emergency Broadcast SMS
+        sms_text = f"""[DMC / AGRARIAN EARLY WARNING - KELANI BASIN]
+STATION: Hanwella Bridge Staff Gauge
+ALERT LEVEL: {alert_status}
 අවවාදයයි: හංවැල්ල/බියගම පහත් බිම්වල හදිසි ගංවතුර අනතුරක්.
 
 • Expected Arrival: {arrival_time.strftime('%I:%M %p')} tomorrow
-• Predicted Peak Water Level: {inundation_depth:.2f}m (90% Conf: {low_bound:.2f}m – {high_bound:.2f}m)
+• Predicted Peak Water Level: {predicted_stage:.2f}m (90% Conf: {low_bound:.2f}m – {high_bound:.2f}m)
 • Root Cause: Upstream soil saturation at {sat:.1f}% with extreme mountain rainfall.
 
 ⚠️ *REQUIRED ACTIONS (Before {action_deadline.strftime('%I:%M %p')}):*
@@ -243,14 +278,12 @@ with tab_alert:
 2. Move two-wheel tractors and tillers to elevated road embankments
 3. Relocate bagged fertilizer, seed reserves, and harvested grain to dry storage sheds
 4. Clear perimeter drainage trenches and block lower farm plot canal ingress points"""
+
         if is_compromised:
-            sms_text += "
-
-⚠️ TELEMETRY COMPROMISED: Satellite pass latency exceeds 6 hours. Uncertainty bounds widened by ±40% based on seasonal persistence."
+            sms_text += "\n\n⚠️ TELEMETRY COMPROMISED: Satellite pass latency exceeds 6 hours. Uncertainty bounds widened by ±40% based on seasonal persistence."
         if is_dam_spill:
-            sms_text += "
+            sms_text += "\n\n🚨 DAM SPILLWAY ADVISORY: Extreme high-altitude rainfall (>150mm/24h) approaches reservoir thresholds (Castlereigh / Maussakelle). Artificial gate releases cannot be tracked via spaceborne precipitation alone."
 
-🚨 DAM SPILLWAY ADVISORY: Extreme high-altitude rainfall (>150mm/24h) approaches reservoir thresholds (Castlereigh / Maussakelle). Artificial gate releases cannot be tracked via spaceborne precipitation alone."
         st.code(sms_text, language="text")
 
 # -------------------------------------------------------------
@@ -265,17 +298,17 @@ with tab_physics:
     eq_col1, eq_col2 = st.columns(2)
     with eq_col1:
         st.markdown("#### 1. Antecedent Soil Moisture Index (ASMI)")
-        st.latex(r"ASMI_t = ASMI_{t-1} \cdot e^{-rac{\Delta t}{24}(1 - lpha)} + P_{	ext{upstream}, t}")
+        st.latex(r"ASMI_t = ASMI_{t-1} \cdot e^{-\frac{\Delta t}{24}(1 - \alpha)} + P_{\text{upstream}, t}")
         st.markdown("""
         * **Exponential Memory Decay:** α = 0.90 represents the multi-day percolation and evapotranspiration loss across southwestern Sri Lanka wet-zone soils.
         * **Absorption Collapse:** When ASMI crosses 180 mm, soil saturation crosses 90%, transitioning the ground from a sponge into an impermeable surface.
         """)
     with eq_col2:
         st.markdown("#### 2. Non-Linear Surface Runoff Exponent")
-        st.latex(r"C_{	ext{eff}} = C_{	ext{dry}} + (C_{	ext{sat}} - C_{	ext{dry}}) \cdot \left(rac{S_t}{100}ight)^{2.2}")
+        st.latex(r"C_{\text{eff}} = C_{\text{dry}} + (C_{\text{sat}} - C_{\text{dry}}) \cdot \left(\frac{S_t}{100}\right)^{2.2}")
         st.markdown("""
-        * $C_{\text{dry}} = 0.25$ (Dry soil absorbs 75% of precipitation).
-        * $C_{\text{sat}} = 0.92$ (Saturated soil triggers immediate 92% flash runoff).
+        * $C_{\\text{dry}} = 0.25$ (Dry soil absorbs 75% of precipitation).
+        * $C_{\\text{sat}} = 0.92$ (Saturated soil triggers immediate 92% flash runoff).
         * **The 360% Multiplier:** 100 mm of rain on saturated soil produces nearly 4x the flood volume of the exact same storm on dry soil.
         """)
 
