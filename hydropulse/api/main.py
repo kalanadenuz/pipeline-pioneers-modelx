@@ -29,6 +29,20 @@ calibrator.calibrated = True
 epistemic = EpistemicGuardrail()
 controller = AlertController()
 
+
+@app.get("/", response_class=HTMLResponse)
+def root_dashboard():
+    dash_path = os.path.join(os.path.dirname(__file__), "..", "dashboard", "index.html")
+    if os.path.exists(dash_path):
+        with open(dash_path, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse("<h1>HydroPulse Early-Warning Platform</h1><p>Visit <a href='/dashboard'>/dashboard</a> or <a href='/docs'>/docs</a></p>")
+
+@app.get("/favicon.ico")
+def favicon():
+    from starlette.responses import Response
+    return Response(status_code=204)
+
 @app.get("/health")
 def health_check():
     return {
