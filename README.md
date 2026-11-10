@@ -169,6 +169,19 @@ python run_pipeline.py
 python -m unittest discover tests/
 ```
 
+
+### Streamlit Cloud Live Web App (Instant Free Deployment)
+This repository is configured for one-click deployment on **Streamlit Community Cloud**:
+1. Connect your repository `kalanadenuz/pipeline-pioneers-modelx` at [share.streamlit.io](https://share.streamlit.io).
+2. Set Main file path to `streamlit_app.py` (or `app.py`).
+3. Click **Deploy**. Your app will be live at `https://pipeline-pioneers-modelx.streamlit.app`.
+
+To run the Streamlit UI locally:
+```bash
+pip install streamlit
+streamlit run streamlit_app.py
+```
+
 ### 3. Launch FastAPI Server & Mobile Dashboard
 ```bash
 uvicorn hydropulse.api.main:app --host 0.0.0.0 --port 8000
