@@ -3,16 +3,15 @@
 > **Competition:** ModelX 2.0 Hackathon  
 > **Domain Track:** 02 Climate, Environment & Disaster Risk  
 > **Team Name:** Pipeline Pioneers  
-> **Authors:** Kalana Kuruppu & Theekshana Chandrathunga  
-> **Affiliation:**   
-> **Date:** November 2026 (Final Submission)
+> **Authors:** Kalana Kuruppu (Team Leader) & Theekshana Chandrathunga (Team Member)  
+> **Submission Date:** November 10, 2026 (Phase 2 Final Implementation)
 
 ---
 
 ## 1. Abstract & Executive Summary
-Communities and smallholder commercial vegetable farmers living in the downstream floodplain of the Kelani River Basin (such as Hanwella, Biyagama, and Kolonnawa) suffer recurring, unforeseen flash inundations caused by delayed upstream hydrological runoff. High-altitude mountain catchments 40 to 60 km upstream regularly receive extreme convective rainfall (>180 mm) while downstream skies remain completely sunny and dry. Water takes 14 to 20 hours to propagate downstream, creating an information blind spot where farmers are trapped in a panicked 30-to-90-minute reactive window that causes seasonal asset losses averaging LKR 250,000 to 600,000 per plot. 
+Communities and smallholder commercial vegetable farmers living in the downstream floodplain of the Kelani River Basin (such as Hanwella, Biyagama, Kaduwela, and Kolonnawa) suffer recurring, unforeseen flash inundations caused by delayed upstream hydrological runoff. High-altitude mountain catchments 40 to 60 km upstream regularly receive extreme convective rainfall (>180 mm) while downstream skies remain completely sunny and dry. Water takes 14 to 20 hours to propagate downstream, creating an information blind spot where farmers are trapped in a panicked 30-to-90-minute reactive window that causes seasonal asset losses averaging LKR 250,000 to 600,000 per plot. 
 
-To solve this, we built **HydroPulse**: an automated early-warning software engine that fuses NASA GPM IMERG 0.1° microwave precipitation, ECMWF Copernicus ERA5-Land rootzone soil water layers (SWVL1, SWVL2), and USGS SRTM 30m digital elevation slopes into a physics-informed gradient-boosted decision tree ensemble (HydroBoost). HydroPulse extracts non-linear antecedent soil memory decay curves (ASMI, α = 0.90) and hydrodynamic routing lag vectors, wrapping point predictions in distribution-free Inductive Conformal Prediction (ICP) to deliver mathematically guaranteed 90% confidence bounds alongside an automated epistemic humility safe-failure trigger. On chronological holdouts from 2021–2024 and the severe May 2024 monsoon flood wave, HydroPulse achieved a 72.6% MAE improvement over persistence on peak extreme surges (0.397 m vs. 1.449 m), a Critical Success Index (CSI) of 0.662, and 96.4% empirical conformal coverage in under 3 seconds of CPU execution.
+To solve this, we built **HydroPulse**: an automated early-warning software engine that fuses NASA GPM IMERG 0.1° microwave precipitation, ECMWF Copernicus ERA5-Land rootzone soil water layers (SWVL1, SWVL2), and USGS SRTM 30m digital elevation slopes into a physics-informed gradient-boosted decision tree ensemble (HydroBoost). HydroPulse extracts non-linear antecedent soil memory decay curves (ASMI, $\alpha = 0.90$) and hydrodynamic routing lag vectors, wrapping point predictions in distribution-free Inductive Conformal Prediction (ICP) to deliver mathematically guaranteed 90% confidence bounds alongside an automated epistemic humility safe-failure trigger. On chronological holdouts from 2021–2024 and the severe May 2024 monsoon flood wave, HydroPulse achieved a 72.6% MAE improvement over persistence on peak extreme surges (0.397 m vs. 1.449 m), a Critical Success Index (CSI) of 0.662, and 96.4% empirical conformal coverage in under 3 seconds of CPU execution.
 
 ---
 
@@ -75,15 +74,15 @@ where $C_{\text{dry}} = 0.25$ and $C_{\text{sat}} = 0.92$. 100 mm of rain on dry
 ---
 
 ## 6. Honest Milestone Evaluation Against Proposal
-* **M1 (Data Ingestion & Masking):** Verified. Automated connectors pull NASA GPM and ERA5-Land parameters clipped to the Kelani Basin with automated QA and conservation law checks.
+* **M1 (Data Ingestion & Masking):** Verified. Automated connectors pull NASA GPM and ERA5-Land parameters clipped to the Kelani Basin with automated QA and conservation law checks across 10,957 records.
 * **M2 (Physical Features & Persistence Baselines):** Verified. ASMI soil memory decay and SRTM topological lag vectors implemented and correlated with historical monsoon seasons.
 * **M3 (Predictive Modeling & Conformal Layer):** Verified. HydroBoost achieved 72.6% improvement over persistence on extreme flood peaks (surpassing the 30% gate) with 96.4% empirical conformal coverage.
-* **M4 (Microservice & Delivery Interface):** Verified. FastAPI REST API serves predictions and dispatches bilingual plain-text SMS/WhatsApp instructions alongside a mobile PWA dashboard.
+* **M4 (Microservice & Delivery Interface):** Verified. Full-width Streamlit interactive dashboard, production FastAPI REST microservice, and trilingual SMS alert generator.
 
 ---
 
 ## 7. Actionable Output & Smallholder Field ROI
-Dispatched Farmer Notification (Bilingual SMS / WhatsApp):
+Dispatched Farmer Notification (Trilingual SMS / WhatsApp):
 > 🚨 CRITICAL FLOOD WARNING (Hanwella/Biyagama)  
 > Expected Arrival: Tomorrow between 04:30 AM – 06:30 AM  
 > Estimated local inundation depth: 0.65m (90% Conf: 0.22m – 1.08m)  

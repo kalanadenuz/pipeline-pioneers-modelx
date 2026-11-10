@@ -2,13 +2,13 @@
 
 > **Competition:** ModelX 2.0 Hackathon | Domain 02: Climate, Environment & Disaster Risk  
 > **Team Name:** Pipeline Pioneers  
-> **Team Members:** Kalana Kuruppu & Theekshana Chandrathunga  
-> **Target Track:** Overall Winner (1st Place · Rs 75,000) & Best Data Vision Special Award
+> **Team Members:** Kalana Kuruppu (Leader) & Theekshana Chandrathunga (Member)  
+> **Submission Date:** November 10, 2026 (Phase 2 Final Implementation)
 
 ---
 
 ## 1. Problem Definition & The Named User
-In southwestern Sri Lanka, over 250,000 residents and 15,000 smallholder commercial farmers in the low-lying Kelani River floodplain (Hanwella, Biyagama, Kolonnawa) suffer recurring, unforeseen flash inundations. Because high-altitude mountain headwaters (Norton Bridge, Castlereigh, Kitulgala) sit 40 to 60 km upstream, torrential monsoon storms of 180+ mm can fall while downstream farm skies remain completely clear. Water takes 14 to 20 hours to travel downstream, creating an information blind spot that causes an average smallholder farmer to lose **LKR 250,000 to 600,000 per event** in ruined standing harvests, waterlogged fertilizer, and destroyed irrigation pumps.
+In southwestern Sri Lanka, over 250,000 residents and 15,000 smallholder commercial vegetable farmers in the low-lying Kelani River floodplain (Hanwella, Biyagama, Kaduwela, Kolonnawa) suffer recurring, unforeseen flash inundations. Because high-altitude mountain headwaters (Norton Bridge, Castlereigh, Kitulgala) sit 40 to 60 km upstream, torrential monsoon storms of 180+ mm can fall while downstream farm skies remain completely sunny and dry. Water takes 14 to 20 hours to travel downstream, creating an information blind spot that causes an average smallholder farmer to lose **LKR 250,000 to 600,000 per flood event** in ruined standing harvests, waterlogged fertilizer, and destroyed irrigation pumps.
 
 ## 2. The "Best Data Vision" Architecture & Temporality
 HydroPulse accesses verified, open spaceborne telemetry pipelines rather than brittle web scrapers or high-maintenance physical IoT microcontrollers:
@@ -18,7 +18,7 @@ HydroPulse accesses verified, open spaceborne telemetry pipelines rather than br
 * **Temporality & Latency Management:** NASA GPM Early Run data carries a 2.5h processing latency. Because downstream wave routing requires 14 to 20 hours, a 2.5h latency still preserves an actionable **11-to-17-hour advance operational window**. Short dropouts (<3h) are forward-filled, while telemetry stale beyond 6 hours trips an automated safe-failure state.
 
 ## 3. Non-Linear Soil Saturation Physics & Kinematic Routing
-Standard regressors fail during flash floods because they assume linear rainfall-runoff coupling. In reality, soil behaves like a sponge: 100 mm of rain falling on dry soil produces negligible flooding, while the exact same 100 mm falling on soil already saturated from days of drizzle (>90% capacity) triggers immediate 100% surface runoff. HydroPulse models this through an **Antecedent Soil Moisture Index (ASMI)** with an exponential memory decay factor (α = 0.90) coupled with SRTM slope routing lag vectors `[t-12h, t-16h, t-20h, t-24h]` and non-linear interaction terms (`Rain × Saturation^2.2`).
+Standard regressors fail during flash floods because they assume linear rainfall-runoff coupling. In reality, soil behaves like a sponge: 100 mm of rain falling on dry soil produces negligible flooding, while the exact same 100 mm falling on soil already saturated from days of drizzle (>90% capacity) triggers immediate 100% surface runoff. HydroPulse models this through an **Antecedent Soil Moisture Index (ASMI)** with an exponential memory decay factor ($\alpha = 0.90$) coupled with SRTM slope routing lag vectors `[t-12h, t-16h, t-20h, t-24h]` and non-linear interaction terms (`Rain × Saturation^2.2`).
 
 ## 4. Benchmark Performance & Baseline Superiority
 HydroPulse was evaluated on 2021–2024 historical partitions and the catastrophic May 2024 monsoon flood surge event, benchmarked against the **Naive Persistence Baseline** and a **Standard Linear Lag Model**:
@@ -39,7 +39,7 @@ Standard black-box AI tools output overconfident point percentages. HydroPulse w
 * **Upstream Dam Spillway Advisory:** If high-altitude rainfall exceeds 150 mm/24h (approaching reservoir capacity at Castlereigh and Maussakelle dams), an advisory flags that artificial dam gate releases cannot be observed via satellite rainfall alone.
 
 ## 6. Actionable Output & Smallholder Field Impact
-*Dispatched Farmer Notification (Bilingual SMS / WhatsApp):*
+*Dispatched Farmer Notification (Trilingual SMS / WhatsApp):*
 > "🚨 CRITICAL FLOOD WARNING (Hanwella/Biyagama): Expected Arrival tomorrow between 04:30 AM – 06:30 AM. Estimated local inundation 0.65m (90% Conf: 0.22m – 1.08m). Upstream soil saturation at 92.4% with extreme mountain rainfall.  
 > REQUIRED ACTIONS (Before 02:00 AM): (1) Dismantle and elevate electric water pumps; (2) Move two-wheel tractors to elevated road embankment; (3) Relocate bagged fertilizer & grain stocks to dry storage."
 
@@ -47,5 +47,5 @@ This transforms a reactive, panic-driven 1-hour scramble into a calm, structured
 
 ## 7. Engineering Rigor & One-Command Reproducibility
 * **Single-Command Execution:** `python run_pipeline.py` runs data ingestion, feature generation, model training, conformal calibration, and alert dispatch in < 3 seconds.
-* **Automated Test Suite:** `python -m unittest discover tests/` (5/5 unit tests verifying physical conservation, baseline superiority, conformal coverage, and latency safe-failure states in 5 seconds).
-* **FastAPI Microservice:** Production backend serving live endpoints at `/health`, `/metrics`, `/forecast`, and `/alert`.
+* **Automated Test Suite:** `python -m unittest discover tests/ -v` (15/15 unit tests verifying physical conservation, baseline superiority, conformal coverage, and latency safe-failure states in 5 seconds).
+* **Production Deployment:** Interactive 100% full-width Streamlit dashboard live at `https://pipeline-pioneers-modelx.streamlit.app` and production FastAPI backend.
